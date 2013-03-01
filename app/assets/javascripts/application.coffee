@@ -27,10 +27,10 @@ class GUI
   constructor: ->
     @container = $('body')
 
-  showList: ->
+  renderEmptyList: ->
     @container.empty()
     @container.append(@container_template())
 
-  showItemInList: (item)->
-    el = @container.find('ul')
-    el.append(@item_template(name: item))
+  renderItemInList: (item)->
+    list = @container.find('ul')
+    list.append(@item_template(name: item))
