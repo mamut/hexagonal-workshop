@@ -1,5 +1,7 @@
 #= require jquery
 #= require underscore
+#= require YouAreDaBomb
+#= require YouAreDaBomb.shortcuts
 
 class DisplayTasksUseCase
 
@@ -34,3 +36,19 @@ class GUI
   renderItemInList: (item)->
     list = @container.find('ul')
     list.append(@item_template(name: item))
+
+class Glue
+
+  constructor: (@useCase, @gui)->
+    Before(@useCase, 'start', =>
+      @gui.renderEmptyList()
+    )
+    After(@useCase, 'displayTask', (task)=>
+      @gui.renderItemInList(task)
+    )
+
+window.run = ->
+  gui = new GUI()
+  useCase = new DisplayTasksUseCase(['do stuff', 'clean after'])
+  app = new Glue(useCase, gui)
+  useCase.start()
